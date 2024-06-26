@@ -39,7 +39,6 @@ jobs:
       - name: Generate Linux mex file
         if: runner.os == 'Linux'
         run: |
-          sed -i 's/MEXLIBS += \$(MLBLAS.*/MEXLIBS = `gfortran --print-file-name libm.a` `gfortran --print-file-name libstdc++.a` `gfortran --print-file-name libgfortran.a` `gfortran --print-file-name libgomp.a` `gfortran --print-file-name libdl.a` -lmwblas -lmwlapack/' makefile
           make matlab
       - name: Run Matlab test
         uses: matlab-actions/run-command@v2
