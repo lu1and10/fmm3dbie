@@ -6,7 +6,7 @@ jobs:
     strategy:
       matrix:
         #os: [ubuntu-latest, windows-latest, macos-latest]
-        os: [windows-latest]
+        os: [windows-latest, macos-latest]
     runs-on: ${{ matrix.os }}
     steps:
       - name: Check out repository
@@ -33,8 +33,8 @@ jobs:
       - name: Generate macOS mex file
         if: runner.os == 'macOS'
         run: |
-          brew install libomp
-          sed 's/\/Applications\/MATLAB_R20\*\*.app/\/Users\/runner\/hostedtoolcache\/MATLAB\/2023.2.999\/arm64\/MATLAB.app/' make.inc.macosx_arm64 > make.inc
+          sed 's/\/Applications\/MATLAB_R\*/\/Users\/runner\/hostedtoolcache\/MATLAB\/2023.2.999\/arm64\/MATLAB.app/' make.inc.macosx_arm64.gnu > make.inc
+          sed -i -e 's/MEXLIBS += \$(MLBLAS.*/MEXLIBS = `gfortran --print-file-name libm.a` `gfortran --print-file-name libstdc++.a` `gfortran --print-file-name libdl.a` `gfortran --print-file-name libgfortran.a` `gfortran --print-file-name libgomp.a`/' makefile
           make matlab
       - name: Generate Linux mex file
         if: runner.os == 'Linux'
