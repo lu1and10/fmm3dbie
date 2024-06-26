@@ -1,5 +1,5 @@
 name: Generate Matlab mex files
-on: [push]
+on: [push, pull_request]
 jobs:
   mex-ci:
     name: ${{ matrix.os }}
